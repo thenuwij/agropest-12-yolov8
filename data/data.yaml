@@ -1,0 +1,27 @@
+# AgroPest-12 — YOLO dataset descriptor.
+#
+# `path` must point at the directory containing train/, valid/ and test/.
+# Either edit it by hand or regenerate this file with:
+#     python -m agropest.data --dataset-root /path/to/AgroPest-12
+#
+# Class order is fixed by the label files and must not be changed.
+
+path: ../data/AgroPest-12
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 12
+names:
+  - Ants
+  - Bees
+  - Beetles
+  - Caterpillars
+  - Earthworms
+  - Earwigs
+  - Grasshoppers
+  - Moths
+  - Slugs
+  - Snails
+  - Wasps
+  - Weevils

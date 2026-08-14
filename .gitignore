@@ -1,0 +1,40 @@
+# --- Credentials: never commit these -----------------------------------------
+kaggle.json
+.kaggle/
+*.pem
+.env
+.env.*
+
+# --- Datasets and model weights (too large for Git; see data/README.md) -------
+data/AgroPest-12/
+data/archive/
+data/raw/
+*.zip
+*.tar.gz
+*.pt
+*.pth
+!yolov8n.pt.placeholder
+
+# --- Training artefacts -------------------------------------------------------
+runs/
+wandb/
+results/metrics.json
+results/metrics.csv
+results/train_summary.json
+
+# --- Python -------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- OS / editor --------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

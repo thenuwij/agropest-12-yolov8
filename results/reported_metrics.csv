@@ -1,0 +1,5 @@
+method,cls_accuracy,cls_precision,cls_recall,cls_f1,cls_pr_auc,det_precision,det_recall,det_map50,det_map50_95,train_time_min,latency_ms,fps,source
+Random Forest,0.1524,,,,,,,,,~20,,,report (test split)
+Linear SVM,0.2816,,,,,,,,,~30,,,report (test split)
+YOLOv8s,0.9173,0.9205,0.9173,0.9179,0.9212,0.8618,0.7359,0.7966,0.4856,135.6,15.69,63.7,report (test split)
+Faster R-CNN (ResNet50-FPN),0.7637,0.5028,0.7721,0.6090,0.7127,0.5028,0.7721,0.7143,,113.5,,,report (test split)
