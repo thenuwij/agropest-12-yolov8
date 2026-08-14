@@ -312,16 +312,3 @@ Key works underpinning the approach.
 6. R. R. Selvaraju et al., "Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization," *ICCV*, 2017.
 7. N. Dalal and B. Triggs, "Histograms of Oriented Gradients for Human Detection," *CVPR*, 2005.
 8. R. Majumdar, *AgroPest-12: A 12-Class Image Dataset of Crop Insects and Pests*, Kaggle, 2025.
-
-## Licence and use
-
-**© 2025 Thenuja Wijesuriya. All rights reserved.**
-
-This repository is published as a portfolio piece. It is offered for reading and
-evaluation only — no licence is granted to use, copy, modify or redistribute the
-code. If you would like to use any part of it, please get in touch.
-
-Third-party components are governed by their own terms and are not redistributed
-here: the [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics)
-package is AGPL-3.0 (installed as a dependency, not vendored), and the
-AgroPest-12 dataset is subject to its author's Kaggle licence.
