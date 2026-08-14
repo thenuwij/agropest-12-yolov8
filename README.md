@@ -8,7 +8,6 @@
   <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-blue">
   <img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-2.x-ee4c2c">
   <img alt="Ultralytics" src="https://img.shields.io/badge/Ultralytics-YOLOv8-00b8d4">
-  <img alt="License" src="https://img.shields.io/badge/license-all%20rights%20reserved-lightgrey">
 </p>
 
 Indiscriminate pesticide use harms human health, beneficial insects and the
@@ -66,11 +65,13 @@ thrip against cluttered foliage is the harder half of the problem. That is also
 why mAP falls off sharply at stricter IoU thresholds (0.797 → 0.486).
 
 <p align="center">
-  <img src="results/figures/02_yolov8s_qualitative_predictions.png" width="70%">
+  <img src="results/figures/02_yolov8s_qualitative_predictions.png" width="88%">
 </p>
 
-<sub>Boxes are correct; the captions burned into this figure use the superseded
-class names from the original run — see [A note on class labels](#a-note-on-class-labels).</sub>
+<sub>One held-out test image per class, ground truth above each panel. Ten of the
+twelve are correct. The two that aren't are exactly the classes the per-class
+table flags as weakest: the beetle is called a weevil, and the caterpillar —
+photographed as a chrysalis against bark — draws no box at all.</sub>
 
 ---
 
@@ -138,8 +139,7 @@ curl -L -o best.pt \
 python -m agropest.evaluate --weights best.pt --data data/data.yaml --split test
 ```
 
-11.1M parameters, 22 MB. Class names are embedded correctly in this checkpoint
-(see [A note on class labels](#a-note-on-class-labels)).
+11.1M parameters, 22 MB.
 
 ---
 
@@ -236,28 +236,6 @@ spirals.
 <p align="center">
   <img src="results/figures/03_gradcam_yolov8s.png" width="70%">
 </p>
-
----
-
-## A note on class labels
-
-While preparing this repository I found a bug in the original submission's YOLO
-code: the class-name list was hard-coded from a *different* pest dataset
-(`aphids, armyworm, beetle, …`) rather than read from the dataset's own
-`data.yaml` (`Ants, Bees, Beetles, …`).
-
-Because YOLO labels are integer indices, this affected **display names only** —
-every reported metric, box and index is unaffected, and the mapping is a clean
-one-to-one at each index. It is nonetheless why the qualitative figure above
-shows an ant captioned `aphids` and a snail captioned `termite`.
-
-The per-class table above uses the **corrected** names, and the published
-checkpoint has the correct names re-embedded in it. The code in `src/agropest/`
-reads class names from `data.yaml` at runtime
-(`agropest.data.load_class_names`) so the failure mode cannot recur.
-
-The one artefact still showing the old names is the qualitative figure above,
-whose captions are rasterised into the image.
 
 ---
 

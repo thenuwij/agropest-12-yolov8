@@ -48,10 +48,8 @@ AgroPest-12/
 | 5 | Earwigs | 11 | Weevils |
 
 Class order is fixed by the integer indices in the label files. Code in this
-repository always reads names from `data.yaml` via
-`agropest.data.load_class_names` rather than hard-coding them — see the
-[note on class labels](../README.md#a-note-on-class-labels) in the top-level
-README for why that matters.
+repository reads names from `data.yaml` via `agropest.data.load_class_names`
+rather than hard-coding them, so names and label indices cannot drift apart.
 
 ## Class balance
 
