@@ -2,12 +2,12 @@
 
 Produces the three families of numbers reported in the write-up:
 
-1. **Detection** — mAP@0.5, mAP@0.5:0.95, precision, recall (Ultralytics' own
+1. **Detection**: mAP@0.5, mAP@0.5:0.95, precision, recall (Ultralytics' own
    COCO-style evaluator, overall and per class).
-2. **Classification** — image-level top-1 accuracy / precision / recall / F1 and
+2. **Classification**: image-level top-1 accuracy / precision / recall / F1 and
    a one-vs-rest PR-AUC, so the detector can be compared like-for-like against
    the SVM and Random Forest baselines, which only ever produced a class label.
-3. **Efficiency** — mean latency and FPS over a fixed sample of test images.
+3. **Efficiency**: mean latency and FPS over a fixed sample of test images.
 
 Usage
 -----

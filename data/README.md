@@ -1,9 +1,9 @@
-# Dataset — AgroPest-12
+# Dataset: AgroPest-12
 
 The image data is **not committed to this repository** (≈560 MB, ~17k images).
 Download it once and point `data/data.yaml` at it.
 
-**Source:** R. Majumdar, *AgroPest-12: A 12-Class Image Dataset of Crop Insects and Pests*, Kaggle, 2025 — [`rupankarmajumdar/crop-pests-dataset`](https://www.kaggle.com/datasets/rupankarmajumdar/crop-pests-dataset)
+**Source:** R. Majumdar, *AgroPest-12: A 12-Class Image Dataset of Crop Insects and Pests*, Kaggle, 2025. [`rupankarmajumdar/crop-pests-dataset`](https://www.kaggle.com/datasets/rupankarmajumdar/crop-pests-dataset)
 
 ## Download
 
@@ -53,7 +53,7 @@ rather than hard-coding them, so names and label indices cannot drift apart.
 
 ## Class balance
 
-The training split is mildly imbalanced — `Ants` is the largest class at ~2,200
+The training split is mildly imbalanced. `Ants` is the largest class at ~2,200
 instances against ~940 for the smallest (`Slugs`):
 
 ![Class distribution](../results/figures/01_class_distribution_train.png)

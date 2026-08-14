@@ -37,7 +37,7 @@ def plot_confusion_matrix(matrix: np.ndarray, names: list[str], out: Path) -> Pa
     ax.set_yticks(range(len(names)), names)
     ax.set_xlabel("Predicted")
     ax.set_ylabel("True")
-    ax.set_title("YOLOv8s — image-level confusion matrix (test set)")
+    ax.set_title("YOLOv8s image-level confusion matrix (test set)")
 
     for i in range(len(names)):
         for j in range(len(names)):
@@ -66,7 +66,7 @@ def plot_per_class_ap(per_class: dict, out: Path) -> Path:
     ax.barh(labels, values, color="#2f6f4e")
     ax.set_xlim(0, 1)
     ax.set_xlabel("AP@0.5")
-    ax.set_title("YOLOv8s — per-class detection AP (test set)")
+    ax.set_title("YOLOv8s per-class detection AP (test set)")
     ax.bar_label(ax.containers[0], fmt="%.3f", padding=3, fontsize=8)
     ax.spines[["top", "right"]].set_visible(False)
 
@@ -126,7 +126,7 @@ def main() -> None:
             )
         )
     else:
-        print(f"{args.metrics} not found — skipping metric plots.")
+        print(f"{args.metrics} not found, skipping metric plots.")
 
     written.append(
         plot_predictions(

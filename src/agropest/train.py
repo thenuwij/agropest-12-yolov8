@@ -27,7 +27,7 @@ def train(data_yaml: Path | str, cfg: TrainConfig) -> tuple[YOLO, float, Path]:
     minutes = (time.time() - start) / 60
 
     run_dir = Path(results.save_dir)
-    print(f"\nTraining finished in {minutes:.1f} min — artefacts in {run_dir}")
+    print(f"\nTraining finished in {minutes:.1f} min, artefacts in {run_dir}")
     print(f"Best checkpoint: {run_dir / 'weights' / 'best.pt'}")
     return model, minutes, run_dir
 

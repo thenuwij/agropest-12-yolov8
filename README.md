@@ -14,7 +14,7 @@ Indiscriminate pesticide use harms human health, beneficial insects and the
 crops themselves. Knowing *which* pest is present, and *where*, lets growers
 target treatment precisely. This project asks a concrete question: **how much
 does detection accuracy actually improve when you move from handcrafted
-features to a modern detector — and what does it cost in compute?**
+features to a modern detector, and what does it cost in compute?**
 
 Answer: **classification accuracy goes from 28% to 92%**, for roughly 4.5× the
 training time, at a latency that still supports real-time monitoring (64 FPS).
@@ -70,8 +70,8 @@ why mAP falls off sharply at stricter IoU thresholds (0.797 → 0.486).
 
 <sub>One held-out test image per class, ground truth above each panel. Ten of the
 twelve are correct. The two that aren't are exactly the classes the per-class
-table flags as weakest: the beetle is called a weevil, and the caterpillar —
-photographed as a chrysalis against bark — draws no box at all.</sub>
+table flags as weakest: the beetle is called a weevil, and the caterpillar,
+photographed as a chrysalis against bark, draws no box at all.</sub>
 
 ---
 
@@ -113,7 +113,7 @@ python -m agropest.data --out data/data.yaml
 # 2. Train
 python -m agropest.train --data data/data.yaml --epochs 50 --imgsz 512
 
-# 3. Evaluate — writes results/metrics.json and results/metrics.csv
+# 3. Evaluate (writes results/metrics.json and results/metrics.csv)
 python -m agropest.evaluate \
     --weights runs/agropest/yolov8s/weights/best.pt \
     --data data/data.yaml --split test
@@ -175,16 +175,16 @@ plausible for in-field monitoring rather than offline batch scoring.
 | Optimiser | `auto` → SGD, lr0 0.01 (Ultralytics selects SGD over AdamW past ~10k iterations; this run was ~47.8k) |
 | Losses | CIoU (box), BCE (classification + objectness) |
 | Augmentation | Mosaic, horizontal flip, HSV jitter (h .015 / s .7 / v .4) |
-| Early stopping | patience 15 on validation mAP — best epoch 30, halted at 45 |
+| Early stopping | patience 15 on validation mAP; best epoch 30, halted at 45 |
 | Seed | 0 |
 | Framework | Ultralytics 8.3.229 |
 | Hardware | NVIDIA Tesla T4 (Google Colab) |
 
 Best-epoch validation scores were mAP@0.5 **0.7943**, precision 0.848, recall
-0.733 — within a point of the test-set figures above, so the model generalised
+0.733, within a point of the test-set figures above, so the model generalised
 rather than fitting the validation split.
 
-512 × 512 was a hardware compromise, not an optimum — see [Limitations](#limitations).
+512 × 512 was a hardware compromise, not an optimum. See [Limitations](#limitations).
 
 ### Evaluation
 
@@ -220,7 +220,7 @@ for the small, low-contrast ones that blend into vegetation.
 | Weevils | 0.966 | 0.977 | 0.957 | 58 |
 
 The pattern is consistent across both columns: `Beetles`, `Caterpillars` and
-`Earthworms` are the weak classes. Grad-CAM (below) explains why — the model
+`Earthworms` are the weak classes. Grad-CAM (below) explains why. The model
 distinguishes beetles by leg groupings and short antennae and weevils by dorsal
 texture, so front and rear views of the two collapse together. Earthworms and
 slugs confuse for the same reason in reverse: both are segmented, limbless and
@@ -251,7 +251,7 @@ Stated plainly, because they shaped the results:
   the available hardware, which made any meaningful sweep impractical.
 - **Cross-model comparability.** The four models were trained by different team
   members on different hardware, so training-time comparisons are indicative
-  rather than controlled. The accuracy comparison is sound — all models were
+  rather than controlled. The accuracy comparison is sound, since all models were
   evaluated on the same held-out test split.
 - **Classical baselines were RAM-bound.** Full-dataset SVM training exceeded
   Colab's memory computing the kernel matrix, so the classical pipeline ran on a
@@ -268,10 +268,10 @@ Stated plainly, because they shaped the results:
 
 ## Context and attribution
 
-Built for **COMP9517 Computer Vision (25T3), UNSW Sydney** — group project.
+Built for **COMP9517 Computer Vision (25T3), UNSW Sydney** as a group project.
 
 The study compared four methods against a common test split. This repository
-contains **my contribution — the YOLOv8s detection pipeline**: design, training,
+contains **my contribution, the YOLOv8s detection pipeline**: design, training,
 evaluation and interpretability analysis. The classical ML (SVM / Random Forest)
 and Faster R-CNN pipelines were implemented by teammates; their results appear
 here only as comparison baselines and remain credited to them.
@@ -286,7 +286,7 @@ Key works underpinning the approach.
 2. Z. Tian et al., "FCOS: Fully Convolutional One-Stage Object Detection," *ICCV*, 2019.
 3. S. Ren et al., "Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks," *NeurIPS*, 2015.
 4. T.-Y. Lin et al., "Feature Pyramid Networks for Object Detection," *CVPR*, 2017.
-5. B. Khalili and A. W. Smyth, "SOD-YOLOv8 — Enhancing YOLOv8 for Small Object Detection," *Sensors*, 2024.
+5. B. Khalili and A. W. Smyth, "SOD-YOLOv8: Enhancing YOLOv8 for Small Object Detection," *Sensors*, 2024.
 6. R. R. Selvaraju et al., "Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization," *ICCV*, 2017.
 7. N. Dalal and B. Triggs, "Histograms of Oriented Gradients for Human Detection," *CVPR*, 2005.
 8. R. Majumdar, *AgroPest-12: A 12-Class Image Dataset of Crop Insects and Pests*, Kaggle, 2025.
