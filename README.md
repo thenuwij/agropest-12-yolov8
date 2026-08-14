@@ -8,11 +8,11 @@
   <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-blue">
   <img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-2.x-ee4c2c">
   <img alt="Ultralytics" src="https://img.shields.io/badge/Ultralytics-YOLOv8-00b8d4">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
+  <img alt="License" src="https://img.shields.io/badge/license-all%20rights%20reserved-lightgrey">
 </p>
 
 Indiscriminate pesticide use harms human health, beneficial insects and the
-crops themselves. Knowing _which_ pest is present, and _where_, lets growers
+crops themselves. Knowing *which* pest is present, and *where*, lets growers
 target treatment precisely. This project asks a concrete question: **how much
 does detection accuracy actually improve when you move from handcrafted
 features to a modern detector — and what does it cost in compute?**
@@ -26,43 +26,51 @@ training time, at a latency that still supports real-time monitoring (64 FPS).
 
 Evaluated on a held-out test split of 546 images / 689 annotated instances.
 
-| Model                                | Type             | Cls. accuracy | Cls. F1   | mAP@0.5   | Train time |
-| ------------------------------------ | ---------------- | ------------- | --------- | --------- | ---------- |
-| Random Forest (HOG+LBP+colour → PCA) | Classical        | 0.152         | ≈0.13     | ≈0.06     | ≈20 min    |
-| Linear SVM (HOG+LBP+colour → PCA)    | Classical        | 0.282         | ≈0.28     | ≈0.17     | ≈30 min    |
-| Faster R-CNN (ResNet50-FPN)          | Two-stage DL     | 0.764         | 0.609     | 0.714     | 113.5 min  |
-| **YOLOv8s**                          | **One-stage DL** | **0.917**     | **0.918** | **0.797** | 135.6 min  |
+| Model | Type | Cls. accuracy | Cls. F1 | mAP@0.5 | Train time |
+|---|---|---|---|---|---|
+| Random Forest (HOG+LBP+colour → PCA) | Classical | 0.152 | ≈0.13 | ≈0.06 | ≈20 min |
+| Linear SVM (HOG+LBP+colour → PCA) | Classical | 0.282 | ≈0.28 | ≈0.17 | ≈30 min |
+| Faster R-CNN (ResNet50-FPN) | Two-stage DL | 0.764 | 0.609 | 0.714 | 113.5 min |
+| **YOLOv8s** | **One-stage DL** | **0.917** | **0.918** | **0.797** | 135.6 min |
 
-Values marked ≈ are read from the comparison charts in the report; all others
-are exact. Full numbers in [`results/reported_metrics.csv`](results/reported_metrics.csv).
+Values marked ≈ are read from the comparison charts below; all others are exact.
+Full numbers in [`results/reported_metrics.csv`](results/reported_metrics.csv).
 
 <p align="center">
-  <img src="results/figures/06_comparison_classification.png" width="46%">
-  <img src="results/figures/07_comparison_detection.png" width="46%">
+  <img src="results/figures/04_comparison_classification.png" width="32%">
+  <img src="results/figures/05_comparison_detection.png" width="32%">
+  <img src="results/figures/06_comparison_training_time.png" width="32%">
 </p>
+
+The training-time chart is the one to read sceptically: the four models ran on
+different hardware, so it shows what each team member's setup cost, not a
+controlled comparison. See [Limitations](#limitations).
 
 ### YOLOv8s in detail
 
-| Metric                              | Value                                                    |
-| ----------------------------------- | -------------------------------------------------------- |
-| mAP@0.5                             | **0.7966**                                               |
-| mAP@0.5:0.95                        | 0.4856                                                   |
-| Detection precision / recall        | 0.8618 / 0.7359                                          |
-| Classification accuracy / F1        | 0.9173 / 0.9179                                          |
-| Classification PR-AUC (one-vs-rest) | 0.9212                                                   |
-| Inference latency                   | 15.69 ms/image (**63.7 FPS**)                            |
-| Training                            | 50 epochs configured, early-stopped ≈ epoch 30, Colab T4 |
+| Metric | Value |
+|---|---|
+| mAP@0.5 | **0.7966** |
+| mAP@0.5:0.95 | 0.4856 |
+| Detection precision / recall | 0.8618 / 0.7359 |
+| Classification accuracy / F1 | 0.9173 / 0.9179 |
+| Classification PR-AUC (one-vs-rest) | 0.9212 |
+| Inference latency | 15.69 ms/image (**63.7 FPS**) |
+| Training | best epoch 30 of 45 run (50 configured), 135.6 min on a Colab T4 |
 
 **Reading the gap between the two headline numbers.** Detection PR-AUC (0.797)
 sits well below classification PR-AUC (0.921) because detection scores
-localisation _and_ labelling together. Once the model has found an insect it
+localisation *and* labelling together. Once the model has found an insect it
 names it correctly ~92% of the time; drawing a tight box around a 20-pixel
 thrip against cluttered foliage is the harder half of the problem. That is also
 why mAP falls off sharply at stricter IoU thresholds (0.797 → 0.486).
 
 <p align="center">
-  <img src="results/figures/04_yolov8s_qualitative_predictions.png" width="70%">
+  <img src="results/figures/02_yolov8s_qualitative_predictions.png" width="70%">
 </p>
+
+<sub>Boxes are correct; the captions burned into this figure use the superseded
+class names from the original run — see [A note on class labels](#a-note-on-class-labels).</sub>
 
 ---
 
@@ -81,11 +89,9 @@ why mAP falls off sharply at stricter IoU thresholds (0.797 → 0.486).
 ├── data/
 │   ├── data.yaml            # YOLO dataset descriptor (12 classes)
 │   └── README.md            # How to obtain the dataset
-├── results/
-│   ├── reported_metrics.csv # Cross-model comparison
-│   └── figures/             # All figures from the study
-└── docs/
-    └── report.pdf           # Full academic write-up
+└── results/
+    ├── reported_metrics.csv # Cross-model comparison
+    └── figures/             # All figures from the study
 ```
 
 ---
@@ -120,6 +126,21 @@ python -m agropest.visualize \
 No GPU? Pass `--device cpu`. Training on CPU is impractical, but evaluation of
 a downloaded checkpoint is fine.
 
+### Pretrained weights
+
+The trained checkpoint is published as a release asset, so you can skip step 2
+and reproduce the reported numbers directly:
+
+```bash
+curl -L -o best.pt \
+  https://github.com/thenuwij/agropest-12-yolov8/releases/latest/download/best_yolov8s_agropest12.pt
+
+python -m agropest.evaluate --weights best.pt --data data/data.yaml --split test
+```
+
+11.1M parameters, 22 MB. Class names are embedded correctly in this checkpoint
+(see [A note on class labels](#a-note-on-class-labels)).
+
 ---
 
 ## Approach
@@ -146,16 +167,22 @@ plausible for in-field monitoring rather than offline batch scoring.
 
 ### Training setup
 
-|                |                                                            |
-| -------------- | ---------------------------------------------------------- |
-| Initialisation | `yolov8s.pt` (COCO-pretrained)                             |
-| Input size     | 512 × 512                                                  |
-| Batch size     | 16                                                         |
-| Optimiser      | Adam (Ultralytics default)                                 |
-| Losses         | CIoU (box), BCE (classification + objectness)              |
-| Augmentation   | Mosaic, horizontal flip, HSV jitter (h .015 / s .7 / v .4) |
-| Early stopping | patience 15 on validation mAP                              |
-| Hardware       | NVIDIA Tesla T4 (Google Colab)                             |
+| | |
+|---|---|
+| Initialisation | `yolov8s.pt` (COCO-pretrained, 11.1M parameters) |
+| Input size | 512 × 512 |
+| Batch size | 16 |
+| Optimiser | `auto` → SGD, lr0 0.01 (Ultralytics selects SGD over AdamW past ~10k iterations; this run was ~47.8k) |
+| Losses | CIoU (box), BCE (classification + objectness) |
+| Augmentation | Mosaic, horizontal flip, HSV jitter (h .015 / s .7 / v .4) |
+| Early stopping | patience 15 on validation mAP — best epoch 30, halted at 45 |
+| Seed | 0 |
+| Framework | Ultralytics 8.3.229 |
+| Hardware | NVIDIA Tesla T4 (Google Colab) |
+
+Best-epoch validation scores were mAP@0.5 **0.7943**, precision 0.848, recall
+0.733 — within a point of the test-set figures above, so the model generalised
+rather than fitting the validation split.
 
 512 × 512 was a hardware compromise, not an optimum — see [Limitations](#limitations).
 
@@ -177,20 +204,20 @@ column in the headline table.
 Detection AP is strongest for species with distinctive silhouettes and weakest
 for the small, low-contrast ones that blend into vegetation.
 
-| Class        | Detection P | Detection R | Cls. F1 | Cls. support |
-| ------------ | ----------- | ----------- | ------- | ------------ |
-| Ants         | 0.924       | 0.695       | 0.972   | 54           |
-| Bees         | 0.902       | 0.864       | 0.963   | 40           |
-| Beetles      | 0.779       | 0.614       | 0.786   | 41           |
-| Caterpillars | 0.847       | 0.495       | 0.825   | 41           |
-| Earthworms   | 0.668       | 0.452       | 0.930   | 23           |
-| Earwigs      | 0.863       | 0.688       | 0.926   | 57           |
-| Grasshoppers | 0.826       | 0.618       | 0.900   | 38           |
-| Moths        | 1.000       | 0.951       | 0.967   | 46           |
-| Slugs        | 0.697       | 0.667       | 0.839   | 44           |
-| Snails       | 0.913       | 0.838       | 0.943   | 44           |
-| Wasps        | 0.958       | 0.973       | 0.968   | 46           |
-| Weevils      | 0.966       | 0.977       | 0.957   | 58           |
+| Class | Detection P | Detection R | Cls. F1 | Cls. support |
+|---|---|---|---|---|
+| Ants | 0.924 | 0.695 | 0.972 | 54 |
+| Bees | 0.902 | 0.864 | 0.963 | 40 |
+| Beetles | 0.779 | 0.614 | 0.786 | 41 |
+| Caterpillars | 0.847 | 0.495 | 0.825 | 41 |
+| Earthworms | 0.668 | 0.452 | 0.930 | 23 |
+| Earwigs | 0.863 | 0.688 | 0.926 | 57 |
+| Grasshoppers | 0.826 | 0.618 | 0.900 | 38 |
+| Moths | 1.000 | 0.951 | 0.967 | 46 |
+| Slugs | 0.697 | 0.667 | 0.839 | 44 |
+| Snails | 0.913 | 0.838 | 0.943 | 44 |
+| Wasps | 0.958 | 0.973 | 0.968 | 46 |
+| Weevils | 0.966 | 0.977 | 0.957 | 58 |
 
 The pattern is consistent across both columns: `Beetles`, `Caterpillars` and
 `Earthworms` are the weak classes. Grad-CAM (below) explains why — the model
@@ -207,7 +234,7 @@ caterpillar dorsal hairs, grasshopper antennae and hind legs, snail shell
 spirals.
 
 <p align="center">
-  <img src="results/figures/05_gradcam_yolov8s.png" width="70%">
+  <img src="results/figures/03_gradcam_yolov8s.png" width="70%">
 </p>
 
 ---
@@ -215,7 +242,7 @@ spirals.
 ## A note on class labels
 
 While preparing this repository I found a bug in the original submission's YOLO
-code: the class-name list was hard-coded from a _different_ pest dataset
+code: the class-name list was hard-coded from a *different* pest dataset
 (`aphids, armyworm, beetle, …`) rather than read from the dataset's own
 `data.yaml` (`Ants, Bees, Beetles, …`).
 
@@ -224,9 +251,13 @@ every reported metric, box and index is unaffected, and the mapping is a clean
 one-to-one at each index. It is nonetheless why the qualitative figure above
 shows an ant captioned `aphids` and a snail captioned `termite`.
 
-The per-class table above uses the **corrected** names. The code in
-`src/agropest/` reads class names from `data.yaml` at runtime
+The per-class table above uses the **corrected** names, and the published
+checkpoint has the correct names re-embedded in it. The code in `src/agropest/`
+reads class names from `data.yaml` at runtime
 (`agropest.data.load_class_names`) so the failure mode cannot recur.
+
+The one artefact still showing the old names is the qualitative figure above,
+whose captions are rasterised into the image.
 
 ---
 
@@ -261,27 +292,36 @@ Stated plainly, because they shaped the results:
 
 Built for **COMP9517 Computer Vision (25T3), UNSW Sydney** — group project.
 
-The study compares four methods; this repository contains **my contribution, the
-YOLOv8s detection pipeline** (design, training, evaluation, interpretability
-analysis, and the results reported in the YOLO sections). The full report in
-[`docs/report.pdf`](docs/report.pdf) is joint work, and the classical ML (SVM /
-Random Forest) and Faster R-CNN pipelines were implemented by teammates — their
-results are reproduced here for comparison and remain credited to them.
+The study compared four methods against a common test split. This repository
+contains **my contribution — the YOLOv8s detection pipeline**: design, training,
+evaluation and interpretability analysis. The classical ML (SVM / Random Forest)
+and Faster R-CNN pipelines were implemented by teammates; their results appear
+here only as comparison baselines and remain credited to them.
+
+The written report is coursework and is not published here.
 
 ## References
 
-Key works underpinning the approach; full bibliography in the report.
+Key works underpinning the approach.
 
-1. Ultralytics, _YOLOv8_, 2023. https://docs.ultralytics.com/models/yolov8/
-2. Z. Tian et al., "FCOS: Fully Convolutional One-Stage Object Detection," _ICCV_, 2019.
-3. S. Ren et al., "Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks," _NeurIPS_, 2015.
-4. T.-Y. Lin et al., "Feature Pyramid Networks for Object Detection," _CVPR_, 2017.
-5. B. Khalili and A. W. Smyth, "SOD-YOLOv8 — Enhancing YOLOv8 for Small Object Detection," _Sensors_, 2024.
-6. R. R. Selvaraju et al., "Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization," _ICCV_, 2017.
-7. N. Dalal and B. Triggs, "Histograms of Oriented Gradients for Human Detection," _CVPR_, 2005.
-8. R. Majumdar, _AgroPest-12: A 12-Class Image Dataset of Crop Insects and Pests_, Kaggle, 2025.
+1. Ultralytics, *YOLOv8*, 2023. https://docs.ultralytics.com/models/yolov8/
+2. Z. Tian et al., "FCOS: Fully Convolutional One-Stage Object Detection," *ICCV*, 2019.
+3. S. Ren et al., "Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks," *NeurIPS*, 2015.
+4. T.-Y. Lin et al., "Feature Pyramid Networks for Object Detection," *CVPR*, 2017.
+5. B. Khalili and A. W. Smyth, "SOD-YOLOv8 — Enhancing YOLOv8 for Small Object Detection," *Sensors*, 2024.
+6. R. R. Selvaraju et al., "Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization," *ICCV*, 2017.
+7. N. Dalal and B. Triggs, "Histograms of Oriented Gradients for Human Detection," *CVPR*, 2005.
+8. R. Majumdar, *AgroPest-12: A 12-Class Image Dataset of Crop Insects and Pests*, Kaggle, 2025.
 
-## Licence
+## Licence and use
 
-Code released under the [MIT Licence](LICENSE). The AgroPest-12 dataset is
-subject to its own licence and is not redistributed here.
+**© 2025 Thenuja Wijesuriya. All rights reserved.**
+
+This repository is published as a portfolio piece. It is offered for reading and
+evaluation only — no licence is granted to use, copy, modify or redistribute the
+code. If you would like to use any part of it, please get in touch.
+
+Third-party components are governed by their own terms and are not redistributed
+here: the [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics)
+package is AGPL-3.0 (installed as a dependency, not vendored), and the
+AgroPest-12 dataset is subject to its author's Kaggle licence.
